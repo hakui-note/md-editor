@@ -104,6 +104,8 @@ body {
 
 .title-container {
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 #noteTitle {
@@ -152,8 +154,9 @@ body {
 }
 
 .button-container {
+    margin-top: 10px; /* タイトルの下に余白を追加 */
     display: flex;
-    margin: 10px 0;
+    gap: 10px; /* ボタン間に余白を追加 */
 }
 
 button {
