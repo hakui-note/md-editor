@@ -1,0 +1,172 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar h2 {
+    margin: 0;
+    margin-right: 20px;
+}
+
+#newNoteBtn {
+    background-color: #fff; /* ボタンの背景色 */
+    border: none; /* 枠線をなしに */
+    cursor: pointer; /* カーソルをポインタに */
+    padding: 5px; /* 内側の余白を少し追加 */
+    border-radius: 5px; /* 角を丸くする */
+    transition: background-color 0.3s ease; /* 背景色の変更にトランジションを追加 */
+}
+
+.icon {
+    width: 40px; /* アイコンの幅 */
+    height: 40px; /* アイコンの高さ */
+}
+
+#newNoteBtn:hover {
+    background-color: #0056b3;
+}
+
+#notesList {
+    list-style: none;
+    padding: 0;
+}
+
+#notesList li {
+    cursor: pointer;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #444;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#notesList li:hover {
+    background-color: #555;
+}
+
+.delete-btn {
+    background-color: transparent; /* 背景を透明に */
+    border: none; /* 枠線をなしに */
+    color: #dc3545; /* テキストの色を赤に */
+    border-radius: 5px; /* 角を丸くする */
+    padding: 0; /* 内側の余白をなしに */
+    cursor: pointer; /* カーソルをポインタに */
+    font-size: 20px; /* フォントサイズを大きく */
+    transition: color 0.3s ease; /* 色変更にトランジションを追加 */
+}
+
+/* ホバー時のスタイル */
+.delete-btn:hover {
+    color: #c82333; /* ホバー時の色を変更 */
+}
+
+/* アクティブ時のスタイル */
+.delete-btn:active {
+    color: #a71d2d; /* クリック時の色を変更 */
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.title-container {
+    margin-bottom: 10px;
+}
+
+#noteTitle {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.editor-container,
+.preview-container {
+    flex: 1;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    overflow: hidden;
+}
+
+#editor {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 20px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+#editor:focus {
+    outline: none;
+}
+
+.preview {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.preview img {
+    max-width: 100%; /* 画像の最大幅を親要素に合わせる */
+    height: auto; /* 高さは自動調整 */
+    display: block; /* ブロック要素として表示 */
+    margin: 0 auto; /* 中央に配置 */
+}
+
+.button-container {
+    display: flex;
+    margin: 10px 0;
+}
+
+button {
+    margin-right: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
