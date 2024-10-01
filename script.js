@@ -139,7 +139,12 @@ newNoteBtn.addEventListener('click', () => {
 });
 
 // 「保存する」ボタンのクリックイベント
-saveBtn.addEventListener('click', saveNote);
+saveBtn.addEventListener('click', () => {
+    saveNote(); // ノートを保存する関数を呼び出す
+    alert('メモが正常に保存されました'); // 保存完了のダイアログを表示
+    hasChanges = false;  // 変更フラグをリセット
+});
+
 
 // 「ダウンロード」ボタンでMarkdownファイルをダウンロード
 downloadBtn.addEventListener('click', () => {
