@@ -138,13 +138,26 @@ newNoteBtn.addEventListener('click', () => {
     clearEditor();
 });
 
+// 通知を表示する関数
+function showNotification(message) {
+    const notification = document.getElementById('saveNotification');
+    notification.textContent = message;
+    notification.classList.remove('hidden');
+    notification.classList.add('visible');
+
+    // 1秒後に通知を非表示にする
+    setTimeout(() => {
+        notification.classList.remove('visible');
+        notification.classList.add('hidden');
+    }, 1000); // 1秒後に非表示
+}
+
 // 「保存する」ボタンのクリックイベント
 saveBtn.addEventListener('click', () => {
     saveNote(); // ノートを保存する関数を呼び出す
-    alert('メモが正常に保存されました'); // 保存完了のダイアログを表示
+    showNotification('メモが正常に保存されました'); // 保存完了の通知を表示
     hasChanges = false;  // 変更フラグをリセット
 });
-
 
 // 「ダウンロード」ボタンでMarkdownファイルをダウンロード
 downloadBtn.addEventListener('click', () => {
