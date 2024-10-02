@@ -125,7 +125,9 @@ body {
     overflow: hidden;
 }
 
+/* プレビュー */
 .preview-container {
+    position: relative; /* ボタンの絶対配置のために必要 */
     flex: 6; /* 高さを6に設定 */
     margin: 10px;
     border: 1px solid #ccc;
@@ -134,19 +136,25 @@ body {
     overflow: hidden;
 }
 
-
-#editor {
-    width: 100%;
-    height: 100%;
-    border: none;
-    padding: 20px;
-    box-sizing: border-box;
-    font-size: 16px;
+#previewTabBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent; /* 背景を透明に */
+    border: none; /* 枠線をなしに */
+    cursor: pointer; /* カーソルをポインタに */
+    padding: 0;
 }
 
-#editor:focus {
-    outline: none;
+#previewTabBtn .icon {
+    width: 24px; /* アイコンのサイズを指定 */
+    height: 24px;
 }
+
+#previewTabBtn:hover .icon {
+    filter: brightness(1.2); /* ホバー時にアイコンを少し明るく */
+}
+
 
 .preview {
     width: 100%;
@@ -161,6 +169,20 @@ body {
     height: auto; /* 高さは自動調整 */
     display: block; /* ブロック要素として表示 */
     margin: 0 auto; /* 中央に配置 */
+}
+
+
+#editor {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 20px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+#editor:focus {
+    outline: none;
 }
 
 .button-container {

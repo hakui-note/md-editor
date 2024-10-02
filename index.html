@@ -14,23 +14,30 @@
             <div class="sidebar-header">
                 <h2>メモ一覧</h2>
                 <button id="newNoteBtn">
-                    <img src="img/新規作成ボタン.png" alt="新規作成" class="icon"> <!-- アイコンを追加 -->
+                    <img src="img/新規作成ボタン.png" alt="新規作成" class="icon">
                 </button>
             </div> 
             <ul id="notesList"></ul>
         </div>
         <div class="main-content">
+            <!-- タイトル -->
             <div class="title-container">
                 <input type="text" id="noteTitle" placeholder="タイトルを入力してください">
             </div>
+            <!-- 保存・ダウンロードボタン -->
             <div class="button-container">
                 <button id="saveBtn">保存する</button>
                 <button id="downloadBtn">ダウンロード</button>
             </div>
+            <!-- エディター画面 -->
             <div class="editor-container">
                 <textarea id="editor" placeholder="ここにMarkdownを入力してください..."></textarea>
             </div>
+            <!-- プレビュー画面 -->
             <div class="preview-container">
+                <button id="previewTabBtn">
+                    <img src="img/外部リンク.png" alt="新規タブでプレビュー" class="icon"> <!-- アイコンボタン -->
+                </button>
                 <div id="preview" class="preview"></div>
             </div>
         </div>
