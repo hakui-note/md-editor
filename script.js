@@ -28,7 +28,7 @@ function saveNote() {
     if (existingIndex > -1) {
         // 既存のメモを更新（更新日を保持する）
         notesList[existingIndex].content = noteContent;
-        notesList[existingIndex].updatedAt = notesList[existingIndex].updatedAt || new Date().toLocaleDateString();
+        notesList[existingIndex].updatedAt = new Date().toLocaleString();
     } else {
         // 新規メモの場合、現在の日付をセット
         const newNote = {
@@ -45,11 +45,19 @@ function saveNote() {
     hasChanges = false;  // 変更フラグをリセット
 }
 
+// メモの配列のソート
+function sortNotesByDate(notes) {
+    return notes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+}
+
 // メモを最終更新日でグループ分け
 function loadNotesFromLocalStorage() {
     const notesListElement = document.getElementById('notesList');
     notesListElement.innerHTML = ''; // サイドバーをクリア
     const notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+    // メモを更新日でソート
+    const sortedNotes = sortNotesByDate(notes);
 
     // 日付ごとにメモをグループ化する
     const groupedNotes = groupNotesByDate(notes);
@@ -307,3 +315,28 @@ window.addEventListener('load', () => {
     loadNotesFromLocalStorage(); 
     clearEditor();
 });
+
+// バックアップを作成する関数
+function backupNotes() {
+    const notesList = JSON.parse(localStorage.getItem('notes')) || [];
+
+    if (notesList.length === 0) {
+        alert('バックアップするデータがありません。');
+        return;
+    }
+
+    const backupData = JSON.stringify(notesList, null, 2); // JSON形式で整形
+    const blob = new Blob([backupData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'backup_notes.json'; // バックアップファイル名
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url); // メモリ解放
+}
+
+// バックアップボタンのクリックイベント
+document.getElementById('backupBtn').addEventListener('click', backupNotes);
