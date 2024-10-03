@@ -12,36 +12,111 @@ let originalTitle = '';
 
 // メモをローカルストレージに保存
 function saveNote() {
-    const title = noteTitle.value.trim();
-    const content = editor.value;
-    
-    if (!title) {
-        alert('タイトルを入力してください');
+    const noteTitle = document.getElementById('noteTitle').value;
+    const noteContent = document.getElementById('editor').value;
+
+    if (!noteTitle || !noteContent) {
+        alert('タイトルと内容を入力してください。');
         return;
     }
 
-    const note = {
-        title: title,
-        content: content
-    };
+    let notesList = JSON.parse(localStorage.getItem('notes')) || [];
+    
+    // 既存メモがあるかチェック
+    const existingIndex = notesList.findIndex(note => note.title === noteTitle);
 
-    let notes = JSON.parse(localStorage.getItem('notes')) || [];
-
-    // 既存のタイトルがあれば更新、なければ新規追加
-    const existingIndex = notes.findIndex(n => n.title === title);
     if (existingIndex > -1) {
-        notes[existingIndex] = note;
+        // 既存のメモを更新（更新日を保持する）
+        notesList[existingIndex].content = noteContent;
+        notesList[existingIndex].updatedAt = notesList[existingIndex].updatedAt || new Date().toLocaleDateString();
     } else {
-        notes.push(note);
+        // 新規メモの場合、現在の日付をセット
+        const newNote = {
+            title: noteTitle,
+            content: noteContent,
+            updatedAt: new Date().toLocaleDateString()  // 新規メモの場合に日付を保存
+        };
+        notesList.push(newNote);
     }
 
-    localStorage.setItem('notes', JSON.stringify(notes));
-    loadNotes();
+    localStorage.setItem('notes', JSON.stringify(notesList)); // ローカルストレージに保存
+    loadNotesFromLocalStorage(); // サイドバーを更新
+    showNotification('メモが正常に保存されました'); // 通知を表示
+    hasChanges = false;  // 変更フラグをリセット
+}
 
-    // 保存後に original のコンテンツを更新
-    originalContent = content;
-    originalTitle = title;
-    hasChanges = false;
+// メモを最終更新日でグループ分け
+function loadNotesFromLocalStorage() {
+    const notesListElement = document.getElementById('notesList');
+    notesListElement.innerHTML = ''; // サイドバーをクリア
+    const notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+    // 日付ごとにメモをグループ化する
+    const groupedNotes = groupNotesByDate(notes);
+
+    Object.keys(groupedNotes).forEach(date => {
+        const dateHeader = document.createElement('h3');
+        dateHeader.textContent = date;  // 日付ヘッダーを追加
+        notesListElement.appendChild(dateHeader);
+
+        groupedNotes[date].forEach((note, index) => {
+            const li = document.createElement('li');
+
+            // メモタイトルと更新日を表示
+            li.innerHTML = `
+                <strong>${note.title}</strong><br>
+                <button class="delete-btn">×</button>
+            `;
+
+            // メモをクリックしたら内容を読み込む
+            li.addEventListener('click', () => {
+                if (hasChanges) {
+                    const isConfirmed = confirm("現在のメモが変更されています。メモを切り替えてもよろしいですか？");
+                    if (isConfirmed) {
+                        hasChanges = false; // キャンセル時にフラグをリセット
+                    } else {
+                        return;
+                    }
+                }
+                document.getElementById('noteTitle').value = note.title;
+                document.getElementById('editor').value = note.content;
+                document.getElementById('preview').innerHTML = marked(note.content);
+            });
+
+            // 削除ボタンをクリックしたらメモを削除
+            li.querySelector('.delete-btn').addEventListener('click', () => {
+                event.stopPropagation(); // リストアイテムのクリックイベントを停止
+                deleteNote(note.title);
+            });
+
+            notesListElement.appendChild(li);
+        });
+    });
+}
+
+// メモを最終更新日ごとにグループ化する関数
+function groupNotesByDate(notes) {
+    return notes.reduce((acc, note) => {
+        const date = new Date(note.updatedAt).toLocaleDateString(); // 日付を取得
+        if (!acc[date]) {
+            acc[date] = [];
+        }
+        acc[date].push(note);
+        return acc;
+    }, {});
+}
+
+
+// メモを最終更新日ごとにグループ化する関数
+function groupNotesByDate(notes) {
+    return notes.reduce((acc, note) => {
+        const date = new Date(note.updatedAt).toLocaleDateString(); // 日付を取得
+        if (!acc[date]) {
+            acc[date] = [];
+        }
+        acc[date].push(note);
+        return acc;
+    }, {});
 }
 
 // サイドバーに保存されたメモを一覧表示
@@ -82,18 +157,22 @@ function loadNoteContent(index) {
     }
 }
 
-// メモを削除する
-function deleteNote(index) {
-    if (confirm("本当に削除しますか？")) {
-        const notes = JSON.parse(localStorage.getItem('notes')) || [];
-        notes.splice(index, 1);
-        localStorage.setItem('notes', JSON.stringify(notes));
-        loadNotes();
+function deleteNote(title) {
+    // 削除確認のダイアログを表示
+    const isConfirmed = confirm(`メモ「${title}」を削除してもよろしいですか？`);
+    
+    if (isConfirmed) {
+        let notesList = JSON.parse(localStorage.getItem('notes')) || [];
 
-        // 現在表示中のノートが削除された場合、エディタをクリア
-        if (index === notes.findIndex(n => n.title === noteTitle.value)) {
-            clearEditor();
-        }
+        // 指定されたタイトルのメモを削除
+        notesList = notesList.filter(note => note.title !== title);
+
+        // 更新後のメモをローカルストレージに保存
+        localStorage.setItem('notes', JSON.stringify(notesList));
+
+        // メモ一覧を更新
+        loadNotesFromLocalStorage();
+        showNotification('メモが削除されました'); // 通知を表示
     }
 }
 
@@ -112,6 +191,11 @@ editor.addEventListener('input', () => {
     const markdownText = editor.value;
     preview.innerHTML = marked(markdownText);
     checkChanges();
+});
+
+// エディタに入力があった場合に変更フラグを立てる
+document.getElementById('editor').addEventListener('input', () => {
+    hasChanges = true; // エディタの内容が変更された場合、フラグを立てる
 });
 
 // タイトルの変更を検知
@@ -218,8 +302,8 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-// ページロード時にメモ一覧を表示
+// ページリロード時にメモ一覧を表示
 window.addEventListener('load', () => {
-    loadNotes();
+    loadNotesFromLocalStorage(); 
     clearEditor();
 });
