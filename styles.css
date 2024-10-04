@@ -175,6 +175,58 @@ button:hover {
     font-size: 16px;
 }
 
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.dropdown-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: white;
+    display: none;
+    border-radius: 5px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    z-index: 100;
+}
+
+.dropdown-list li {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.color-circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
 #editor:focus {
     outline: none;
 }

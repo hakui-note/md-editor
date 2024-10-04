@@ -26,6 +26,30 @@
             </div>
             <!-- エディター画面 -->
             <div class="editor-container">
+                <div class="custom-dropdown">
+                    <div class="dropdown-select" id="colorDropdown">
+                        文字色を選択
+                    </div>
+                    <ul class="dropdown-list" id="colorOptions">
+                        <li data-color="red"><span class="color-circle" style="background-color: red;"></span> 赤</li>
+                        <li data-color="blue"><span class="color-circle" style="background-color: blue;"></span> 青</li>
+                        <li data-color="green"><span class="color-circle" style="background-color: green;"></span> 緑</li>
+                        <li data-color="black"><span class="color-circle" style="background-color: black;"></span> 黒</li>
+                    </ul>
+                </div>
+                
+                <div class="custom-dropdown">
+                    <div class="dropdown-select" id="markerDropdown">
+                        マーカーを選択
+                    </div>
+                    <ul class="dropdown-list" id="markerOptions">
+                        <li data-color="yellow"><span class="color-circle" style="background-color: yellow;"></span> 黄</li>
+                        <li data-color="lightgreen"><span class="color-circle" style="background-color: lightgreen;"></span> 緑</li>
+                        <li data-color="lightblue"><span class="color-circle" style="background-color: lightblue;"></span> 青</li>
+                        <li data-color="pink"><span class="color-circle" style="background-color: pink;"></span> ピンク</li>
+                    </ul>
+                </div>
+                <!-- テキストエリア -->
                 <textarea id="editor" placeholder="ここにMarkdownを入力してください..."></textarea>
             </div>
             <!-- 保存・ダウンロード・バックアップボタン -->
