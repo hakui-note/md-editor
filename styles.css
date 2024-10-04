@@ -26,6 +26,13 @@ body {
     flex-direction: column;
 }
 
+/* 選択中のメモのスタイル */
+#notesList li.active {
+    background-color: #444;
+    color: white;
+    font-weight: bold;
+}
+
 .sidebar-header {
     display: flex;
     align-items: center;
@@ -64,7 +71,7 @@ body {
     cursor: pointer;
     margin: 10px 0;
     padding: 10px;
-    background-color: #444;
+    background-color: #333;
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
@@ -74,6 +81,7 @@ body {
 #notesList li:hover {
     background-color: #555;
 }
+
 
 .delete-btn {
     background-color: transparent; /* 背景を透明に */

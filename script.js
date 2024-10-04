@@ -86,6 +86,15 @@ function loadNotesFromLocalStorage() {
                         return;
                     }
                 }
+
+                // すべてのメモから "active" クラスを削除
+                document.querySelectorAll('#notesList li').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // クリックされたメモに "active" クラスを追加
+                li.classList.add('active');
+
                 document.getElementById('noteTitle').value = note.title;
                 document.getElementById('editor').value = note.content;
                 document.getElementById('preview').innerHTML = marked(note.content);
@@ -101,19 +110,6 @@ function loadNotesFromLocalStorage() {
         });
     });
 }
-
-// メモを最終更新日ごとにグループ化する関数
-function groupNotesByDate(notes) {
-    return notes.reduce((acc, note) => {
-        const date = new Date(note.updatedAt).toLocaleDateString(); // 日付を取得
-        if (!acc[date]) {
-            acc[date] = [];
-        }
-        acc[date].push(note);
-        return acc;
-    }, {});
-}
-
 
 // メモを最終更新日ごとにグループ化する関数
 function groupNotesByDate(notes) {
