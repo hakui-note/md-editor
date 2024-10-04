@@ -67,6 +67,13 @@ body {
     padding: 0;
 }
 
+#notesList h3 {
+    font-size: 16px;
+    text-decoration: underline;  /* アンダーラインを引く */
+    text-decoration-color: #ddd;  /* アンダーバーの色 */
+    text-decoration-thickness: 1px;  /* アンダーバーの厚さ */
+}
+
 #notesList li {
     cursor: pointer;
     margin: 10px 0;
