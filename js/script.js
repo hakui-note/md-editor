@@ -11,7 +11,7 @@ let originalContent = '';
 let originalTitle = '';
 
 // メモをローカルストレージに保存
-function saveNote() {
+function saveCurrentNote() {
     const noteTitle = document.getElementById('noteTitle').value;
     const noteContent = document.getElementById('editor').value;
 
@@ -40,7 +40,7 @@ function saveNote() {
     }
 
     localStorage.setItem('notes', JSON.stringify(notesList)); // ローカルストレージに保存
-    loadNotesFromLocalStorage(); // サイドバーを更新
+    loadNotesList(); // サイドバーを更新
     showNotification('メモが正常に保存されました'); // 通知を表示
     hasChanges = false;  // 変更フラグをリセット
 }
@@ -51,7 +51,7 @@ function sortNotesByDate(notes) {
 }
 
 // メモを最終更新日でグループ分け
-function loadNotesFromLocalStorage() {
+function loadNotesList() {
     const notesListElement = document.getElementById('notesList');
     notesListElement.innerHTML = ''; // サイドバーをクリア
     const notes = JSON.parse(localStorage.getItem('notes')) || [];
@@ -175,7 +175,7 @@ function deleteNote(title) {
         localStorage.setItem('notes', JSON.stringify(notesList));
 
         // メモ一覧を更新
-        loadNotesFromLocalStorage();
+        loadNotesList();
         showNotification('メモが削除されました'); // 通知を表示
     }
 }
@@ -242,7 +242,7 @@ function showNotification(message) {
 
 // 「保存する」ボタンのクリックイベント
 saveBtn.addEventListener('click', () => {
-    saveNote(); // ノートを保存する関数を呼び出す
+    saveCurrentNote(); // ノートを保存する関数を呼び出す
     showNotification('メモが正常に保存されました'); // 保存完了の通知を表示
     hasChanges = false;  // 変更フラグをリセット
 });
@@ -292,7 +292,7 @@ document.getElementById('previewTabBtn').addEventListener('click', openPreviewIn
 document.addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key === 's') {
         event.preventDefault(); // ブラウザのデフォルトの保存機能を無効にする
-        saveNote(); // 保存処理を実行
+        saveCurrentNote(); // 保存処理を実行
         showNotification('メモが正常に保存されました'); // 保存完了の通知を表示
         hasChanges = false;  // 変更フラグをリセット
     }
@@ -308,7 +308,7 @@ document.addEventListener('keydown', function(event) {
 
 // ページリロード時にメモ一覧を表示
 window.addEventListener('load', () => {
-    loadNotesFromLocalStorage(); 
+    loadNotesList(); 
     clearEditor();
 });
 
@@ -336,126 +336,6 @@ function backupNotes() {
 
 // バックアップボタンのクリックイベント
 document.getElementById('backupBtn').addEventListener('click', backupNotes);
-
-
-// ページ全体でクリックを監視して、プルダウン以外をクリックすると閉じる
-document.addEventListener('click', (event) => {
-    const colorOptions = document.getElementById('colorOptions');
-    const markerOptions = document.getElementById('markerOptions');
-
-    // プルダウンのリストがクリックされた場合は何もしない
-    if (colorOptions.contains(event.target) || markerOptions.contains(event.target)) {
-        return;
-    }
-
-    // プルダウン以外をクリックしたらプルダウンメニューを閉じる
-    colorOptions.style.display = 'none';
-    markerOptions.style.display = 'none';
-});
-
-// プルダウンの開閉処理（文字色）
-document.getElementById('colorDropdown').addEventListener('click', (event) => {
-    const dropdown = document.getElementById('colorOptions');
-    const markerDropdown = document.getElementById('markerOptions');
-
-    // マーカープルダウンが開いている場合は閉じる
-    if (markerDropdown.style.display === 'block') {
-        markerDropdown.style.display = 'none';
-    }
-
-    // 文字色プルダウンの開閉
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    event.stopPropagation(); // イベントの伝播を停止
-});
-
-// プルダウンの開閉処理（マーカー）
-document.getElementById('markerDropdown').addEventListener('click', (event) => {
-    const dropdown = document.getElementById('markerOptions');
-    const colorDropdown = document.getElementById('colorOptions');
-
-    // 文字色プルダウンが開いている場合は閉じる
-    if (colorDropdown.style.display === 'block') {
-        colorDropdown.style.display = 'none';
-    }
-
-    // マーカープルダウンの開閉
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    event.stopPropagation(); // イベントの伝播を停止
-});
-
-
-// プルダウンの選択肢がクリックされたときの処理（文字色のみ）
-document.querySelectorAll('#colorOptions li').forEach(item => {
-    item.addEventListener('click', () => {
-        const color = item.getAttribute('data-color');
-        applyTextColor(`<font color="${color}">`, `</font>`);
-
-        // 選択された色をプルダウンボタンに反映
-        document.getElementById('colorDropdown').innerHTML = 
-            `<span class="color-circle" style="background-color: ${color};"></span> ${item.textContent}`;
-        
-        // プルダウンを閉じる
-        document.getElementById('colorOptions').style.display = 'none';
-    });
-});
-
-// プルダウンの選択肢がクリックされたときの処理（マーカーのみ）
-document.querySelectorAll('#markerOptions li').forEach(item => {
-    item.addEventListener('click', () => {
-        const color = item.getAttribute('data-color');
-        applyMarkerColor(`<span style="background-color:${color};">`, `</span>`);
-
-        // 選択された色をプルダウンボタンに反映
-        document.getElementById('markerDropdown').innerHTML = 
-            `<span class="color-circle" style="background-color: ${color};"></span> ${item.textContent}`;
-        
-        // プルダウンを閉じる
-        document.getElementById('markerOptions').style.display = 'none';
-    });
-});
-
-// 選択されたテキストに文字色を適用する関数
-function applyTextColor(startTag, endTag) {
-    const start = editor.selectionStart;
-    const end = editor.selectionEnd;
-    const selectedText = editor.value.substring(start, end);
-
-    // 選択範囲がある場合はタグで囲む
-    if (selectedText) {
-        const newText = startTag + selectedText + endTag;
-        editor.setRangeText(newText);
-    } else {
-        // 選択範囲がない場合はカーソル位置にタグを挿入
-        editor.setRangeText(startTag + endTag);
-        editor.selectionStart = editor.selectionEnd = start + startTag.length;
-    }
-
-    updatePreview(); // プレビューを更新
-}
-
-// 選択されたテキストにマーカー色を適用する関数
-function applyMarkerColor(startTag, endTag) {
-    const start = editor.selectionStart;
-    const end = editor.selectionEnd;
-    const selectedText = editor.value.substring(start, end);
-
-    // 選択範囲がある場合はタグで囲む
-    if (selectedText) {
-        const newText = startTag + selectedText + endTag;
-        editor.setRangeText(newText);
-    } else {
-        // 選択範囲がない場合はカーソル位置にタグを挿入
-        editor.setRangeText(startTag + endTag);
-        editor.selectionStart = editor.selectionEnd = start + startTag.length;
-    }
-
-    updatePreview(); // プレビューを更新
-}
-
-// エディタの内容をプレビューに反映する関数
-function updatePreview() {
-    preview.innerHTML = marked(editor.value); // MarkdownをHTMLに変換して表示
-}
 
 // エディタの内容が変更されるたびにプレビューを更新
 editor.addEventListener('input', updatePreview);
