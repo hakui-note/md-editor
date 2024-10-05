@@ -175,19 +175,21 @@ button:hover {
     font-size: 16px;
 }
 
+/* ------------- プルダウンメニュー ---------------- */
 .custom-dropdown {
-    display: inline-block; /* 横並びにするための設定 */
+    display: flex; /* 横並びにするための設定 */
     position: relative;
     margin-right: 20px; /* プルダウン間のスペースを調整 */
 }
 
 .dropdown-select {
     padding: 10px;
+    margin-right: 30px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
     cursor: pointer;
-    display: flex;
+    display: inline;
     align-items: center;
     justify-content: space-between;
 }
@@ -196,7 +198,7 @@ button:hover {
     position: absolute;
     top: 100%;
     left: 0;
-    width: 100%;
+    width: 20%;
     border: 1px solid #ccc;
     background-color: white;
     display: none;
@@ -207,11 +209,19 @@ button:hover {
     z-index: 100;
 }
 
-.dropdown-list li {
+#colorOptions {
     padding: 10px;
     cursor: pointer;
-    display: flex;
+    display: none;
     align-items: center;
+}
+
+#markerOptions {
+    padding: 10px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    left: 130px;
 }
 
 .dropdown-list li:hover {
@@ -222,12 +232,8 @@ button:hover {
     width: 20px; /* 色ボックスの幅 */
     height: 20px; /* 色ボックスの高さ */
     border-radius: 50%; /* 丸いボックス */
-    display: inline-block;
+    float: left;
     margin-right: 10px; /* テキストとの間にスペースを追加 */
-}
-
-#editor:focus {
-    outline: none;
 }
 
 /* ---------------- プレビュー ------------------ */
