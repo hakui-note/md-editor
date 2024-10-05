@@ -1,19 +1,19 @@
-// 選択範囲のテキストをタグで囲む
-function wrapSelectedText(startTag, endTag) {
-    const start = editor.selectionStart;
-    const end = editor.selectionEnd;
-    const selectedText = editor.value.substring(start, end);
-
-    if (selectedText) {
-        const newText = startTag + selectedText + endTag;
-        editor.setRangeText(newText);
-    } else {
-        editor.setRangeText(startTag + endTag);
-        editor.selectionStart = editor.selectionEnd = start + startTag.length;
-    }
-
-    updatePreview();
+// エディタの内容をクリアする
+function clearEditor() {
+    noteTitle.value = '';
+    editor.value = '';
+    preview.innerHTML = '';
+    originalContent = '';
+    originalTitle = '';
+    hasChanges = false;
 }
+
+// エディタの内容をプレビューにリアルタイム反映
+editor.addEventListener('input', () => {
+    const markdownText = editor.value;
+    preview.innerHTML = marked(markdownText);
+    checkChanges();
+});
 
 // プレビューを更新
 function updatePreview() {

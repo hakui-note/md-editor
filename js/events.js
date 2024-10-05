@@ -28,6 +28,22 @@ document.getElementById('markerDropdown').addEventListener('click', (event) => {
     event.stopPropagation(); // クリックイベントの伝播を防ぐ
 });
 
+// 選択範囲のテキストをタグで囲む
+function wrapSelectedText(startTag, endTag) {
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const selectedText = editor.value.substring(start, end);
+
+    if (selectedText) {
+        const newText = startTag + selectedText + endTag;
+        editor.setRangeText(newText);
+    } else {
+        editor.setRangeText(startTag + endTag);
+        editor.selectionStart = editor.selectionEnd = start + startTag.length;
+    }
+
+    updatePreview();
+}
 // ページ全体のクリックイベントリスナー
 document.addEventListener('click', (event) => {
     const colorOptions = document.getElementById('colorOptions');

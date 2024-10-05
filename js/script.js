@@ -180,23 +180,6 @@ function deleteNote(title) {
     }
 }
 
-// エディタの内容をクリアする
-function clearEditor() {
-    noteTitle.value = '';
-    editor.value = '';
-    preview.innerHTML = '';
-    originalContent = '';
-    originalTitle = '';
-    hasChanges = false;
-}
-
-// エディタの内容をプレビューにリアルタイム反映
-editor.addEventListener('input', () => {
-    const markdownText = editor.value;
-    preview.innerHTML = marked(markdownText);
-    checkChanges();
-});
-
 // エディタに入力があった場合に変更フラグを立てる
 document.getElementById('editor').addEventListener('input', () => {
     hasChanges = true; // エディタの内容が変更された場合、フラグを立てる
@@ -336,6 +319,3 @@ function backupNotes() {
 
 // バックアップボタンのクリックイベント
 document.getElementById('backupBtn').addEventListener('click', backupNotes);
-
-// エディタの内容が変更されるたびにプレビューを更新
-editor.addEventListener('input', updatePreview);
