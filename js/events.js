@@ -10,7 +10,7 @@ document.getElementById('colorDropdown').addEventListener('click', (event) => {
 
     // 文字色プルダウンの開閉
     colorDropdown.style.display = colorDropdown.style.display === 'block' ? 'none' : 'block';
-    event.stopPropagation();
+    event.stopPropagation(); // クリックイベントの伝播を防ぐ
 });
 
 // プルダウンの開閉処理（マーカー）
@@ -25,7 +25,7 @@ document.getElementById('markerDropdown').addEventListener('click', (event) => {
 
     // マーカープルダウンの開閉
     markerDropdown.style.display = markerDropdown.style.display === 'block' ? 'none' : 'block';
-    event.stopPropagation();
+    event.stopPropagation(); // クリックイベントの伝播を防ぐ
 });
 
 // ページ全体のクリックイベントリスナー

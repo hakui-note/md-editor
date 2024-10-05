@@ -176,10 +176,9 @@ button:hover {
 }
 
 .custom-dropdown {
+    display: inline-block; /* 横並びにするための設定 */
     position: relative;
-    display: inline-block;
-    width: 200px;
-    margin-bottom: 10px;
+    margin-right: 20px; /* プルダウン間のスペースを調整 */
 }
 
 .dropdown-select {
@@ -220,11 +219,11 @@ button:hover {
 }
 
 .color-circle {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
+    width: 20px; /* 色ボックスの幅 */
+    height: 20px; /* 色ボックスの高さ */
+    border-radius: 50%; /* 丸いボックス */
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 10px; /* テキストとの間にスペースを追加 */
 }
 
 #editor:focus {
