@@ -1,10 +1,10 @@
-const editor = document.getElementById('editor');
-const preview = document.getElementById('preview');
-const saveBtn = document.getElementById('saveBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const notesList = document.getElementById('notesList');
-const noteTitle = document.getElementById('noteTitle');
-const newNoteBtn = document.getElementById('newNoteBtn');
+const $editor = $('#editor');
+const $preview = $('#preview');
+const $saveBtn = $('#saveBtn');
+const $downloadBtn = $('#downloadBtn');
+const $notesList = $('#notesList');
+const $noteTitle = $('#noteTitle');
+const $newNoteBtn = $('#newNoteBtn');
 
 let hasChanges = false; // 変更があったかどうかのフラグ
 let originalContent = '';
@@ -12,18 +12,20 @@ let originalTitle = '';
 
 // メモをローカルストレージに保存
 function saveCurrentNote() {
-    const noteTitle = document.getElementById('noteTitle').value;
-    const noteContent = document.getElementById('editor').value;
+    var noteTitle = $('#noteTitle').val();
+    var noteContent = $('#editor').val();
 
     if (!noteTitle || !noteContent) {
         alert('タイトルと内容を入力してください。');
         return;
     }
 
-    let notesList = JSON.parse(localStorage.getItem('notes')) || [];
-    
+    var notesList = JSON.parse(localStorage.getItem('notes')) || [];
+
     // 既存メモがあるかチェック
-    const existingIndex = notesList.findIndex(note => note.title === noteTitle);
+    var existingIndex = notesList.findIndex(function(note) {
+        return note.title === noteTitle;
+    });
 
     if (existingIndex > -1) {
         // 既存のメモを更新（更新日を保持する）
@@ -31,7 +33,7 @@ function saveCurrentNote() {
         notesList[existingIndex].updatedAt = new Date().toLocaleString();
     } else {
         // 新規メモの場合、現在の日付をセット
-        const newNote = {
+        var newNote = {
             title: noteTitle,
             content: noteContent,
             updatedAt: new Date().toLocaleDateString()  // 新規メモの場合に日付を保存
@@ -52,8 +54,7 @@ function sortNotesByDate(notes) {
 
 // メモを最終更新日でグループ分け
 function loadNotesList() {
-    const notesListElement = document.getElementById('notesList');
-    notesListElement.innerHTML = ''; // サイドバーをクリア
+    $('#notesList').empty(); // サイドバーをクリア
     const notes = JSON.parse(localStorage.getItem('notes')) || [];
 
     // メモを更新日でソート
@@ -63,21 +64,20 @@ function loadNotesList() {
     const groupedNotes = groupNotesByDate(notes);
 
     Object.keys(groupedNotes).forEach(date => {
-        const dateHeader = document.createElement('h3');
-        dateHeader.textContent = date;  // 日付ヘッダーを追加
-        notesListElement.appendChild(dateHeader);
+        const dateHeader = $('<h3>', { text: date });  // 日付ヘッダーを追加
+        $('#notesList').append(dateHeader);
 
         groupedNotes[date].forEach((note, index) => {
-            const li = document.createElement('li');
+            const $li = $('<li>');
 
             // メモタイトルと更新日を表示
-            li.innerHTML = `
+            $li.html(`
                 <strong>${note.title}</strong><br>
                 <button class="delete-btn">×</button>
-            `;
+            `);
 
             // メモをクリックしたら内容を読み込む
-            li.addEventListener('click', () => {
+            $li.on('click', () => {
                 if (hasChanges) {
                     const isConfirmed = confirm("現在のメモが変更されています。メモを切り替えてもよろしいですか？");
                     if (isConfirmed) {
@@ -88,25 +88,23 @@ function loadNotesList() {
                 }
 
                 // すべてのメモから "active" クラスを削除
-                document.querySelectorAll('#notesList li').forEach(item => {
-                    item.classList.remove('active');
-                });
+                $('#notesList li').removeClass('active');
 
                 // クリックされたメモに "active" クラスを追加
-                li.classList.add('active');
+                $li.addClass('active');
 
-                document.getElementById('noteTitle').value = note.title;
-                document.getElementById('editor').value = note.content;
-                document.getElementById('preview').innerHTML = marked(note.content);
+                $('#noteTitle').val(note.title);
+                $('#editor').val(note.content);
+                $('#preview').html(marked(note.content));
             });
 
             // 削除ボタンをクリックしたらメモを削除
-            li.querySelector('.delete-btn').addEventListener('click', () => {
+            $li.find('.delete-btn').on('click', () => {
                 event.stopPropagation(); // リストアイテムのクリックイベントを停止
                 deleteNote(note.title);
             });
 
-            notesListElement.appendChild(li);
+            $('#notesList').append($li);
         });
     });
 }
@@ -122,8 +120,8 @@ function groupNotesByDate(notes) {
         return acc;
     }, {});
 }
-
 // サイドバーに保存されたメモを一覧表示
+// ChatGPTによる調整
 function loadNotes() {
     notesList.innerHTML = '';
     const notes = JSON.parse(localStorage.getItem('notes')) || [];
@@ -155,9 +153,9 @@ function loadNoteContent(index) {
     const note = notes[index];
 
     if (note) {
-        noteTitle.value = note.title;
-        editor.value = note.content;
-        preview.innerHTML = marked(note.content);
+        $('#noteTitle').val(note.title);
+        $('#editor').val(note.content);
+        $('#preview').html(marked(note.content));
     }
 }
 
@@ -181,12 +179,12 @@ function deleteNote(title) {
 }
 
 // エディタに入力があった場合に変更フラグを立てる
-document.getElementById('editor').addEventListener('input', () => {
+$('#editor').on('input', () => {
     hasChanges = true; // エディタの内容が変更された場合、フラグを立てる
 });
 
 // タイトルの変更を検知
-noteTitle.addEventListener('input', checkChanges);
+$('#noteTitle').on('input', checkChanges);
 
 // 変更を検知する関数
 function checkChanges() {
@@ -194,7 +192,7 @@ function checkChanges() {
 }
 
 // ページを離れる前に確認ダイアログを表示する
-window.addEventListener('beforeunload', (event) => {
+$(window).on('beforeunload', function(event) {
     if (hasChanges) {
         event.preventDefault(); // 標準のダイアログを表示
         event.returnValue = ''; // Chrome用
@@ -202,8 +200,8 @@ window.addEventListener('beforeunload', (event) => {
 });
 
 // 新規作成ボタンのクリックイベント
-newNoteBtn.addEventListener('click', () => {
-    if (hasChanges && !confirm('変更が保存されていません。ページを離れますか？')) {
+$('#newNoteBtn').on('click', () => {
+    if (hasChanges && !confirm('変更が保存されていません。ページを離れますか？')){
         return;
     }
     clearEditor();
@@ -211,49 +209,48 @@ newNoteBtn.addEventListener('click', () => {
 
 // 通知を表示する関数
 function showNotification(message) {
-    const notification = document.getElementById('saveNotification');
-    notification.textContent = message;
-    notification.classList.remove('hidden');
-    notification.classList.add('visible');
+    const notification = $('#saveNotification');
+    notification.text(message);
+    notification.removeClass('hidden');
+    notification.addClass('visible');
 
     // 1秒後に通知を非表示にする
     setTimeout(() => {
-        notification.classList.remove('visible');
-        notification.classList.add('hidden');
+        notification.removeClass('visible');
+        notification.addClass('hidden');
     }, 1000); // 1秒後に非表示
 }
 
 // 「保存する」ボタンのクリックイベント
-saveBtn.addEventListener('click', () => {
+$('#saveBtn').on('click', () => {
     saveCurrentNote(); // ノートを保存する関数を呼び出す
     showNotification('メモが正常に保存されました'); // 保存完了の通知を表示
     hasChanges = false;  // 変更フラグをリセット
 });
 
-// 「ダウンロード」ボタンでMarkdownファイルをダウンロード
-downloadBtn.addEventListener('click', () => {
-    const markdownText = editor.value;
-    const blob = new Blob([markdownText], { type: 'text/markdown' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${noteTitle.value || 'markdown'}.md`; // タイトルをファイル名に使用
-    a.click();
-    URL.revokeObjectURL(url);
-});
-
 // Ctrl + Sで保存を実行するショートカット機能
-document.addEventListener('keydown', function(event) {
+$(document).on('keydown', function(event) {
     if (event.ctrlKey && event.key === 's') {
         event.preventDefault(); // ブラウザのデフォルトの保存機能を無効にする
         saveCurrentNote(); // 保存処理を実行
-        showNotification('メモが正常に保存されました'); // 保存完了の通知を表示
-        hasChanges = false;  // 変更フラグをリセット
+        showNotification('メモが正常に保存されました'); // // 保存完了の通知を表示
+        hasChanges = false;  //   // 変更フラグをリセット
     }
 });
 
+// 「ダウンロード」ボタンでMarkdownファイルをダウンロード
+$('#downloadBtn').on('click', () => {
+    const markdownText = $('#editor').val();
+    const blob = new Blob([markdownText], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = $('<a>', { href: url, download: `${$('#noteTitle').val() || 'markdown'}.md` });
+    $(document.body).append(a);
+    a[0].click();
+    URL.revokeObjectURL(url);
+});
+
 // ページリロード時にメモ一覧を表示
-window.addEventListener('load', () => {
+$(window).on('load', () => {
     loadNotesList(); 
     clearEditor();
 });

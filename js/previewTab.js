@@ -1,6 +1,6 @@
 // 新規タブでプレビューを表示する関数
 function openPreviewInNewTab() {
-    const previewContent = document.getElementById('preview').innerHTML; // プレビューの内容を取得
+    const previewContent = $('#preview').html(); // プレビューの内容を取得
 
     // 新しいウィンドウを開き、プレビューを表示
     const newWindow = window.open('', '_blank');
@@ -25,7 +25,7 @@ function openPreviewInNewTab() {
 }
 
 // Ctrl + Pで新規タブにプレビューを開くショートカット機能
-document.addEventListener('keydown', function(event) {
+$(document).on('keydown', function(event) {
     if (event.ctrlKey && event.key === 'p') {
         event.preventDefault(); // ブラウザのデフォルトの印刷機能を無効にする
         openPreviewInNewTab(); // 新規タブでプレビューを開く
@@ -33,4 +33,4 @@ document.addEventListener('keydown', function(event) {
 });
 
 // 「新規タブでプレビュー」ボタンのクリックイベント
-document.getElementById('previewTabBtn').addEventListener('click', openPreviewInNewTab);
+$('#previewTabBtn').on('click', openPreviewInNewTab);
