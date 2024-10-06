@@ -120,6 +120,7 @@ function groupNotesByDate(notes) {
         return acc;
     }, {});
 }
+
 // サイドバーに保存されたメモを一覧表示
 // ChatGPTによる調整
 function loadNotes() {
@@ -159,6 +160,7 @@ function loadNoteContent(index) {
     }
 }
 
+// メモを削除
 function deleteNote(title) {
     // 削除確認のダイアログを表示
     const isConfirmed = confirm(`メモ「${title}」を削除してもよろしいですか？`);
@@ -177,6 +179,40 @@ function deleteNote(title) {
         showNotification('メモが削除されました'); // 通知を表示
     }
 }
+
+$(document).ready(function() {
+    var isDragging = false;
+    var minWidth = 150; // サイドバーの最小幅
+    var maxWidth = 400; // サイドバーの最大幅
+
+    // ドラッグバーが押された時
+    $('#dragbar').mousedown(function(e) {
+        isDragging = true;
+        $('body').addClass('no-select'); // ドラッグ中にテキスト選択を無効にする
+    });
+
+    // ドラッグ中の動作
+    $(document).mousemove(function(e) {
+        if (isDragging) {
+            var newWidth = e.pageX;
+
+            // 上限と下限を設定
+            if (newWidth < minWidth) newWidth = minWidth;
+            if (newWidth > maxWidth) newWidth = maxWidth;
+
+            // サイドバーとメインコンテンツの幅を変更
+            $('.sidebar').css('width', newWidth + 'px');
+        }
+    });
+
+    // ドラッグを終了した時
+    $(document).mouseup(function() {
+        if (isDragging) {
+            isDragging = false;
+            $('body').removeClass('no-select'); // ドラッグ終了後にテキスト選択を有効に戻す
+        }
+    });
+});
 
 // エディタに入力があった場合に変更フラグを立てる
 $('#editor').on('input', () => {

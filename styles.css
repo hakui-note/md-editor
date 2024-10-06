@@ -13,9 +13,13 @@ body {
     height: 100%;
 }
 
+.row {
+    display: flex;
+}
+
 /* -------------------- サイドバー ---------------*/
 .sidebar {
-    width: 250px;
+    width: 30%;
     background-color: #333;
     color: white;
     padding: 20px;
@@ -34,15 +38,6 @@ body {
     }
 }
 
-
-
-/* 画面幅が大きい場合のメインコンテンツの調整 */
-@media (min-width: 1200px) {
-    .main-content {
-        margin-left: 0px; /* サイドバーの幅に合わせて調整 */
-    }
-}
-
 /* 選択中のメモのスタイル */
 #notesList li.active {
     background-color: #444;
@@ -54,11 +49,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .sidebar h2 {
-    margin: 0;
-    margin-right: 20px;
+    
 }
 
 #newNoteBtn {
@@ -106,7 +101,17 @@ body {
     background-color: #555;
 }
 
+/* -------------------- ドラッグバー ---------------*/
+#dragbar {
+    width: 5px;
+    background-color: #ccc;
+    cursor: ew-resize;
+    height: 100vh;
+    flex-shrink: 0; /* ドラッグバーの幅を固定 */
+    margin-right: 0;
+}
 
+/* -------------------- 削除ボタン ---------------*/
 .delete-btn {
     background-color: transparent; /* 背景を透明に */
     border: none; /* 枠線をなしに */
@@ -117,11 +122,9 @@ body {
     font-size: 20px; /* フォントサイズを大きく */
     transition: color 0.3s ease; /* 色変更にトランジションを追加 */
 }
-
 .delete-btn:hover {
     color: #c82333; 
 }
-
 .delete-btn:active {
     color: #a71d2d; 
 }
@@ -149,7 +152,6 @@ body {
 }
 
 /* ---------- 保存・ダウンロード・バックアップボタン ------------- */
-
 .button-container {
     margin: 10px 0; /* タイトルの下に余白を追加 */
     display: flex;
@@ -193,8 +195,9 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
-    cursor: pointer;
     width: 150px;
+    height: 50px;
+    cursor: pointer;
     box-sizing: border-box; /* パディングとボーダーを含めて幅を固定 */
 }
 
@@ -202,20 +205,16 @@ body {
     position: relative; /* メニューが選択項目の下に表示されるように */
     border: 1px solid #ccc;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 0px;
     display: none;
     list-style: none;
-    width: 150px; /* 固定幅 */
     padding: 0;
     margin: 0;
-    text-align: center;
 }
 
 .dropdown-list li {
-    display: inline-block;
-    justify-content: space-between;
+    display: inline;
     cursor: pointer;
-    text-align: center;
 }
 
 .dropdown-list li:hover {
@@ -224,11 +223,10 @@ body {
 
 .color-circle {
     display: inline-block;
-    width: 40px; /* 色ボックスの幅 */
-    height: 40px; /* 色ボックスの高さ */
-    border-radius: 0%; /* 丸いボックス */
-    float: left;
-    margin: 0;
+    width: 30px; /* 色ボックスの幅 */
+    height: 30px; /* 色ボックスの高さ */
+    border-radius: 0%; /* 角を丸くするボックス */
+    margin: 5px 5px; /* ボックスの間隔 */
 }
 
 /* ---------------- プレビュー ------------------ */
