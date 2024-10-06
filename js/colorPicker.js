@@ -11,10 +11,6 @@ function applyColor(selector, applyColorFunction, dropdownId, optionsId, isMarke
                 applyColorFunction(`<font color="${color}">`, `</font>`); // 文字色用
             }
 
-            // 選択された色をプルダウンボタンに反映
-            document.getElementById(dropdownId).innerHTML = 
-                `<span class="color-circle" style="background-color: ${color};"></span> ${item.textContent}`;
-
             // プルダウンを閉じる
             document.getElementById(optionsId).style.display = 'none';
         });
