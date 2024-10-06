@@ -24,6 +24,23 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+}
+
+/* 画面幅が大きい場合にサイドバーの幅を制限 */
+@media (min-width: 1200px) {
+    .sidebar {
+        width: 250px; /* 画面が大きいときのサイドバーの最大幅 */
+    }
+}
+
+
+
+/* 画面幅が大きい場合のメインコンテンツの調整 */
+@media (min-width: 1200px) {
+    .main-content {
+        margin-left: 0px; /* サイドバーの幅に合わせて調整 */
+    }
 }
 
 /* 選択中のメモのスタイル */
@@ -113,7 +130,9 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    height: 100vh;
     padding: 10px;
+    margin-left: 0px; /* サイドバーの幅に応じて調整 */
 }
 
 #noteTitle {
@@ -132,33 +151,15 @@ body {
 /* ---------- 保存・ダウンロード・バックアップボタン ------------- */
 
 .button-container {
-    margin-top: 10px; /* タイトルの下に余白を追加 */
+    margin: 10px 0; /* タイトルの下に余白を追加 */
     display: flex;
     gap: 10px; /* ボタン間に余白を追加 */
-}
-
-button {
-    margin-right: 10px;
-    margin-left: 10px;
-    padding: 10px 15px;
-    font-size: 14px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-button:last-child {
-    margin-left: 0px;
-}
-button:hover {
-    background-color: #0056b3;
 }
 
 /* ------------- エディター ---------------- */
 .editor-container {
     flex: 5; /* 高さを4に設定 */
-    margin: 10px;
+    margin: 10px 0;
     margin-bottom: 0px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -176,52 +177,45 @@ button:hover {
 }
 
 /* ------------- プルダウンメニュー ---------------- */
+.custom-dropdown-container {
+    display: flex;
+    gap: 10px;
+}
+
 .custom-dropdown {
-    display: flex; /* 横並びにするための設定 */
     position: relative;
-    margin-right: 20px; /* プルダウン間のスペースを調整 */
+    display: inline-block;
+    text-align: center;
 }
 
 .dropdown-select {
     padding: 10px;
-    margin-right: 30px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
     cursor: pointer;
-    display: inline;
-    align-items: center;
-    justify-content: space-between;
+    width: 150px;
+    box-sizing: border-box; /* パディングとボーダーを含めて幅を固定 */
 }
 
 .dropdown-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 20%;
+    position: relative; /* メニューが選択項目の下に表示されるように */
     border: 1px solid #ccc;
     background-color: white;
-    display: none;
     border-radius: 5px;
-    list-style-type: none;
+    display: none;
+    list-style: none;
+    width: 150px; /* 固定幅 */
     padding: 0;
     margin: 0;
-    z-index: 100;
+    text-align: center;
 }
 
-#colorOptions {
-    padding: 10px;
+.dropdown-list li {
+    display: inline-block;
+    justify-content: space-between;
     cursor: pointer;
-    display: none;
-    align-items: center;
-}
-
-#markerOptions {
-    padding: 10px;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    left: 130px;
+    text-align: center;
 }
 
 .dropdown-list li:hover {
@@ -229,18 +223,18 @@ button:hover {
 }
 
 .color-circle {
-    width: 20px; /* 色ボックスの幅 */
-    height: 20px; /* 色ボックスの高さ */
-    border-radius: 50%; /* 丸いボックス */
+    display: inline-block;
+    width: 40px; /* 色ボックスの幅 */
+    height: 40px; /* 色ボックスの高さ */
+    border-radius: 0%; /* 丸いボックス */
     float: left;
-    margin-right: 10px; /* テキストとの間にスペースを追加 */
+    margin: 0;
 }
 
 /* ---------------- プレビュー ------------------ */
 .preview-container {
     position: relative; /* ボタンの絶対配置のために必要 */
     flex: 6; /* 高さを6に設定 */
-    margin: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: white;
@@ -249,8 +243,8 @@ button:hover {
 
 #previewTabBtn {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 5px;
+    right: 20px;
     background-color: transparent; /* 背景を透明に */
     border: none; /* 枠線をなしに */
     cursor: pointer; /* カーソルをポインタに */
@@ -263,7 +257,6 @@ button:hover {
 #previewTabBtn:hover .icon {
     filter: brightness(1.2); /* ホバー時にアイコンを少し明るく */
 }
-
 
 .preview {
     width: 100%;
