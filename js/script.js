@@ -27,18 +27,22 @@ function saveCurrentNote() {
         return note.title === noteTitle;
     });
 
+    // 日付と時刻を取得
+    var now = new Date();
+    var dateTime = now.toLocaleDateString() + ' ' + now.toLocaleTimeString(); // 日付と時刻をフォーマット
+
     if (existingIndex > -1) {
         // 既存のメモを更新（更新日を保持する）
         notesList[existingIndex].content = noteContent;
-        notesList[existingIndex].updatedAt = new Date().toLocaleString();
+        notesList[existingIndex].updatedAt = dateTime;
     } else {
-        // 新規メモの場合、現在の日付をセット
+        // 新規メモの場合、配列の先頭に追加して、現在の日付をセット
         var newNote = {
             title: noteTitle,
             content: noteContent,
-            updatedAt: new Date().toLocaleDateString()  // 新規メモの場合に日付を保存
+            updatedAt: dateTime, // 日付と時刻を保存
         };
-        notesList.push(newNote);
+        notesList.push(newNote); // 配列の先頭に追加
     }
 
     localStorage.setItem('notes', JSON.stringify(notesList)); // ローカルストレージに保存
@@ -48,19 +52,14 @@ function saveCurrentNote() {
 }
 
 // メモの配列のソート
-function sortNotesByDate(notes) {
-    return notes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-}
-
-// メモを最終更新日でグループ分け
 function loadNotesList() {
     $('#notesList').empty(); // サイドバーをクリア
-    const notes = JSON.parse(localStorage.getItem('notes')) || [];
+    let notes = JSON.parse(localStorage.getItem('notes')) || [];
 
-    // メモを更新日でソート
-    const sortedNotes = sortNotesByDate(notes);
+    // メモを更新日でソート（新しい順に）
+    notes = sortNotesByDate(notes);
 
-    // 日付ごとにメモをグループ化する
+    // メモを日付ごとにグループ化
     const groupedNotes = groupNotesByDate(notes);
 
     Object.keys(groupedNotes).forEach(date => {
@@ -70,13 +69,13 @@ function loadNotesList() {
         groupedNotes[date].forEach((note, index) => {
             const $li = $('<li>');
 
-            // メモタイトルと更新日を表示
+            // メモタイトルと削除ボタンを表示
             $li.html(`
                 <strong>${note.title}</strong><br>
                 <button class="delete-btn">×</button>
             `);
 
-            // メモをクリックしたら内容を読み込む
+            // メモクリックで内容を読み込む
             $li.on('click', () => {
                 if (hasChanges) {
                     const isConfirmed = confirm("現在のメモが変更されています。メモを切り替えてもよろしいですか？");
@@ -93,15 +92,16 @@ function loadNotesList() {
                 // クリックされたメモに "active" クラスを追加
                 $li.addClass('active');
 
+                // メモの内容を読み込む
                 $('#noteTitle').val(note.title);
                 $('#editor').val(note.content);
                 $('#preview').html(marked(note.content));
             });
 
-            // 削除ボタンをクリックしたらメモを削除
-            $li.find('.delete-btn').on('click', () => {
+            // 削除ボタンのクリックイベントを追加
+            $li.find('.delete-btn').on('click', (event) => {
                 event.stopPropagation(); // リストアイテムのクリックイベントを停止
-                deleteNote(note.title);
+                deleteNote(note.title); // メモを削除
             });
 
             $('#notesList').append($li);
@@ -109,17 +109,23 @@ function loadNotesList() {
     });
 }
 
-// メモを最終更新日ごとにグループ化する関数
+// メモを更新日でソートする関数（降順）
+function sortNotesByDate(notes) {
+    return notes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+}
+
+// メモを日付ごとにグループ化する関数
 function groupNotesByDate(notes) {
-    return notes.reduce((acc, note) => {
-        const date = new Date(note.updatedAt).toLocaleDateString(); // 日付を取得
-        if (!acc[date]) {
-            acc[date] = [];
+    return notes.reduce((group, note) => {
+        const date = note.updatedAt.split(' ')[0]; // 日付のみ抽出
+        if (!group[date]) {
+            group[date] = [];
         }
-        acc[date].push(note);
-        return acc;
+        group[date].push(note);
+        return group;
     }, {});
 }
+
 
 // サイドバーに保存されたメモを一覧表示
 // ChatGPTによる調整
@@ -285,8 +291,25 @@ $('#downloadBtn').on('click', () => {
     URL.revokeObjectURL(url);
 });
 
+// 最新のメモを所得する関数
+function getLatestNote() {
+    const notes = JSON.parse(localStorage.getItem('notes')) || [];
+    
+    // 最新のメモを取得（更新日でソート）
+    const sortedNotes = sortNotesByDate(notes);
+    
+    // 最新メモを返す
+    return sortedNotes[0]; // 最新メモを返す
+}
+
 // ページリロード時にメモ一覧を表示
 $(window).on('load', () => {
     loadNotesList(); 
-    clearEditor();
+    
+    const latestNote = getLatestNote();
+    if (latestNote) {
+        $('#noteTitle').val(latestNote.title); // タイトルを表示
+        $('#editor').val(latestNote.content); // 内容を表示
+        $('#preview').html(marked(latestNote.content)); // プレビューを更新
+    }
 });
