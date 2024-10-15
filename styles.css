@@ -7,6 +7,17 @@ body {
     background-color: #f4f4f4;
 }
 
+/* ヘッダー */
+.navbar {
+    background-color: #f4f4f4;
+    padding: 0;
+    width: 100%;
+    height: 60px;
+}
+.navbar-brand {
+    align-items: center;
+}
+
 .container {
     display: flex;
     width: 100%;
@@ -15,20 +26,38 @@ body {
 
 .row {
     display: flex;
+    margin-top: 60px;
+}
+
+#toggle-btn {
+    background-color: transparent; /* ボタンの背景色 */
+    border: none; /* 枠線をなしに */
+    cursor: pointer; /* カーソルをポインタに */
+    padding: 0px; /* 内側の余白を0 */
+    border-radius: 5px; /* 角を丸くする */
 }
 
 /* -------------------- サイドバー ---------------*/
 .sidebar {
-    width: 30%;
+    width: 25%;
     background-color: #333;
     color: white;
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
+    scrollbar-width: none;
     position: relative;
     display: flex;
     flex-direction: column;
     height: 100vh;
+    transition: all 0.3s ease;
+}
+
+/* 折りたたまれたサイドバー */
+.sidebar.collapsed {
+    width: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 /* 画面幅が大きい場合にサイドバーの幅を制限 */
@@ -46,19 +75,14 @@ body {
 }
 
 .sidebar-header {
-    display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
-#newNoteBtn {
-    background-color: #fff; /* ボタンの背景色 */
-    border: none; /* 枠線をなしに */
-    cursor: pointer; /* カーソルをポインタに */
-    padding: 0px; /* 内側の余白を0 */
-    border-radius: 5px; /* 角を丸くする */
-    transition: background-color 0.3s ease; /* 背景色の変更にトランジションを追加 */
+.sidebar-btn {
+    display: flex;
+    justify-content: space-between;
 }
 
 .icon {
@@ -66,7 +90,21 @@ body {
     height: 50px; /* アイコンの高さ */
 }
 
+/* 新規作成ボタンとハンバーガーボタンのスタイル */
+#newNoteBtn{
+    background-color: #fff; /* ボタンの背景色 */
+    border: none; /* 枠線をなしに */
+    cursor: pointer; /* カーソルをポインタに */
+    padding: 0px; /* 内側の余白を0 */
+    border-radius: 5px; /* 角を丸くする */
+    margin-bottom: 20px;
+}
+
 #newNoteBtn:hover {
+    background-color: #0056b3;
+}
+
+#toggle-btn:hover {
     background-color: #0056b3;
 }
 
@@ -129,9 +167,13 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: calc(100vh- 60px);
     padding: 10px;
     margin-left: 0px; /* サイドバーの幅に応じて調整 */
+}
+
+.main-content.collapsed {
+    margin-left: 0;
 }
 
 #noteTitle {

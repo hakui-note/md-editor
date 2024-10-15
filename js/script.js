@@ -126,7 +126,6 @@ function groupNotesByDate(notes) {
     }, {});
 }
 
-
 // サイドバーに保存されたメモを一覧表示
 // ChatGPTによる調整
 function loadNotes() {
@@ -187,6 +186,8 @@ function deleteNote(title) {
 }
 
 $(document).ready(function() {
+
+    // サイドバーのドラッグ機能
     var isDragging = false;
     var minWidth = 150; // サイドバーの最小幅
     var maxWidth = 400; // サイドバーの最大幅
@@ -219,6 +220,15 @@ $(document).ready(function() {
         }
     });
 });
+
+$(document).ready(function() {
+    // 折りたたみボタンのクリックイベント
+    $('#toggle-btn').on('click', function() {
+        $('.sidebar').toggleClass('collapsed'); // サイドバーを折りたたむ/開く
+        $('#main-content').toggleClass('collapsed'); // メインコンテンツのマージン調整
+    });
+});
+
 
 // エディタに入力があった場合に変更フラグを立てる
 $('#editor').on('input', () => {
