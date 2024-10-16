@@ -9,13 +9,20 @@ body {
 
 /* ヘッダー */
 .navbar {
-    background-color: #f4f4f4;
+    background-color: #333;
     padding: 0;
     width: 100%;
     height: 60px;
 }
-.navbar-brand {
-    align-items: center;
+
+#nav-title {
+    position: absolute;
+    left: 50%;
+    margin: 0;
+    padding: 10px;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .container {
@@ -30,20 +37,35 @@ body {
 }
 
 #toggle-btn {
-    background-color: transparent; /* ボタンの背景色 */
+    background-color: white; /* ボタンの背景色 */
     border: none; /* 枠線をなしに */
     cursor: pointer; /* カーソルをポインタに */
     padding: 0px; /* 内側の余白を0 */
     border-radius: 5px; /* 角を丸くする */
 }
 
+/* ----------- 通知のスタイル --------------------- */
+/* 表示時 */
+.notification {
+    color: white;
+    background-color: #4CAF50;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.5s ease;
+}
+/* 非表示時 */
+.hidden {
+    opacity: 0;
+}
+
 /* -------------------- サイドバー ---------------*/
 .sidebar {
-    width: 25%;
+    width: 28%;
     background-color: #333;
     color: white;
     padding: 20px;
-    box-sizing: border-box;
+    padding-right: 0;
     overflow-y: auto;
     scrollbar-width: none;
     position: relative;
@@ -67,14 +89,8 @@ body {
     }
 }
 
-/* 選択中のメモのスタイル */
-#notesList li.active {
-    background-color: #444;
-    color: white;
-    font-weight: bold;
-}
-
 .sidebar-header {
+    display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
@@ -130,15 +146,19 @@ body {
     justify-content: space-between;
     align-items: center;
 }
-
+/* 選択中のメモのスタイル */
+#notesList li.active {
+    background-color: #444;
+    color: white;
+}
 #notesList li:hover {
     background-color: #555;
 }
 
 /* -------------------- ドラッグバー ---------------*/
 #dragbar {
-    width: 5px;
-    background-color: #ccc;
+    width: 10px;
+    background-color: #333;
     cursor: ew-resize;
     height: 100vh;
     flex-shrink: 0; /* ドラッグバーの幅を固定 */
@@ -322,27 +342,3 @@ body {
 #backupBtn:hover {
     background-color: #138496; /* ホバー時の色 */
 }
-
-/* ----------- 通知のスタイル --------------------- */
-.notification {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: 1000;
-}
-
-.notification.visible {
-    opacity: 1; /* 表示されるとき */
-}
-
-.notification.hidden {
-    opacity: 0; /* 非表示時 */
-}
-
