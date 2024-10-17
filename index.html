@@ -14,8 +14,12 @@
     <body>
         <!-- header -->
         <nav class="navbar fixed-top">
-            <button id="toggle-btn" class="btn btn-outline-primary"><img src="img/hamburger_menu.png" alt="" class="icon"></button>
-            <h1 id="nav-title">MDメモ</h1>
+            <div id="nav-btn">
+                <button id="toggle-btn" class="btn btn-outline-primary"><img src="img/hamburger_menu.png" alt="" class="icon"></button>
+                <button id="newNoteBtn">
+                    <img src="img/新規作成ボタン.png" alt="新規作成" class="icon">
+                </button>
+            </div>
             <div id="saveNotification" class="notification hidden">メモが正常に保存されました</div>
         </nav>
 
@@ -26,9 +30,6 @@
                 <div class="sidebar">
                     <div class="sidebar-header">
                         <h2>メモ一覧</h2>
-                        <button id="newNoteBtn">
-                            <img src="img/新規作成ボタン.png" alt="新規作成" class="icon">
-                        </button>
                     </div> 
                     <ul id="notesList"></ul>
                 </div>
@@ -39,6 +40,12 @@
                 <div class="main-content">
                     <div class="title-container">
                         <input type="text" id="noteTitle" placeholder="タイトルを入力してください" class="form-control">
+                        <!-- ボタンコンテナ -->
+                        <div class="button-container">
+                            <button id="saveBtn" class="btn btn-primary">保存する</button>
+                            <button id="downloadBtn" class="btn btn-primary">ダウンロード</button>
+                            <button id="backupBtn" class="btn btn-info">バックアップ</button>
+                        </div>
                     </div>
                     <!-- カスタムドロップダウン -->
                     <div class ="custom-dropdown-container">
@@ -59,15 +66,10 @@
                             </ul>
                         </div>
                     </div>
+
                     <!-- エディター画面 -->
                     <div class="editor-container">
                         <textarea id="editor" class="form-control" placeholder="ここにMarkdownを入力してください..."></textarea>
-                    </div>
-                    <!-- ボタンコンテナ -->
-                    <div class="button-container">
-                        <button id="saveBtn" class="btn btn-primary">保存する</button>
-                        <button id="downloadBtn" class="btn btn-primary">ダウンロード</button>
-                        <button id="backupBtn" class="btn btn-info">バックアップ</button>
                     </div>
                     <!-- プレビュー画面 -->
                     <div class="preview-container">

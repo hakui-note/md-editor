@@ -7,6 +7,11 @@ body {
     background-color: #f4f4f4;
 }
 
+.icon {
+    width: 50px; /* アイコンの幅 */
+    height: 50px; /* アイコンの高さ */
+}
+
 /* ヘッダー */
 .navbar {
     background-color: #333;
@@ -15,15 +20,24 @@ body {
     height: 60px;
 }
 
-#nav-title {
-    position: absolute;
-    left: 50%;
-    margin: 0;
-    padding: 10px;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
+#nav-btn {
+    display: flex;
+    margin-bottom: 30px;
 }
+
+#newNoteBtn, #toggle-btn {
+    background-color: #fff; /* ボタンの背景色 */
+    border: none; /* 枠線をなしに */
+    cursor: pointer; /* カーソルをポインタに */
+    padding: 0px; /* 内側の余白を0 */
+    margin-right: 30px;
+    border-radius: 5px; /* 角を丸くする */
+}
+
+#newNoteBtn:hover, #toggle-btn:hover {
+    background-color: #0056b3;
+}
+
 
 .container {
     display: flex;
@@ -36,20 +50,13 @@ body {
     margin-top: 60px;
 }
 
-#toggle-btn {
-    background-color: white; /* ボタンの背景色 */
-    border: none; /* 枠線をなしに */
-    cursor: pointer; /* カーソルをポインタに */
-    padding: 0px; /* 内側の余白を0 */
-    border-radius: 5px; /* 角を丸くする */
-}
-
 /* ----------- 通知のスタイル --------------------- */
 /* 表示時 */
 .notification {
     color: white;
     background-color: #4CAF50;
     padding: 10px 20px;
+    margin-bottom: 30px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: opacity 0.5s ease;
@@ -66,12 +73,12 @@ body {
     color: white;
     padding: 20px;
     padding-right: 0;
+    height: 100vh;
     overflow-y: auto;
     scrollbar-width: none;
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 100vh;
     transition: all 0.3s ease;
 }
 
@@ -99,29 +106,6 @@ body {
 .sidebar-btn {
     display: flex;
     justify-content: space-between;
-}
-
-.icon {
-    width: 50px; /* アイコンの幅 */
-    height: 50px; /* アイコンの高さ */
-}
-
-/* 新規作成ボタンとハンバーガーボタンのスタイル */
-#newNoteBtn{
-    background-color: #fff; /* ボタンの背景色 */
-    border: none; /* 枠線をなしに */
-    cursor: pointer; /* カーソルをポインタに */
-    padding: 0px; /* 内側の余白を0 */
-    border-radius: 5px; /* 角を丸くする */
-    margin-bottom: 20px;
-}
-
-#newNoteBtn:hover {
-    background-color: #0056b3;
-}
-
-#toggle-btn:hover {
-    background-color: #0056b3;
 }
 
 #notesList {
@@ -160,7 +144,6 @@ body {
     width: 10px;
     background-color: #333;
     cursor: ew-resize;
-    height: 100vh;
     flex-shrink: 0; /* ドラッグバーの幅を固定 */
     margin-right: 0;
 }
@@ -183,63 +166,58 @@ body {
     color: #a71d2d; 
 }
 
+/* -------------------- メインコンテンツ ---------------*/
 .main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    height: calc(100vh- 60px);
+    height: 100vh;
     padding: 10px;
-    margin-left: 0px; /* サイドバーの幅に応じて調整 */
 }
 
 .main-content.collapsed {
     margin-left: 0;
 }
 
-#noteTitle {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
 .title-container {
+    width: 100%;
     margin-bottom: 5px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+}
+
+#noteTitle {
+    width: 40%;
+    padding: 10px;
+    font-size: 16px;
 }
 
 /* ---------- 保存・ダウンロード・バックアップボタン ------------- */
 .button-container {
-    margin: 10px 0; /* タイトルの下に余白を追加 */
     display: flex;
-    gap: 10px; /* ボタン間に余白を追加 */
-}
-
-/* ------------- エディター ---------------- */
-.editor-container {
-    flex: 5; /* 高さを4に設定 */
+    width: 60%;
     margin: 10px 0;
-    margin-bottom: 0px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
-    overflow: hidden;
+    margin-left: 10px;
+    gap: 5px; /* ボタン間に余白を追加 */
 }
 
-#editor {
-    width: 100%;
-    height: 100%;
+#backupBtn {
+    background-color: #17a2b8; /* 青色の背景 */
+    color: white;
     border: none;
-    padding: 20px;
-    box-sizing: border-box;
-    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#backupBtn:hover {
+    background-color: #138496; /* ホバー時の色 */
 }
 
 /* ------------- プルダウンメニュー ---------------- */
 .custom-dropdown-container {
     display: flex;
-    gap: 10px;
+    gap: 5px;
 }
 
 .custom-dropdown {
@@ -287,10 +265,30 @@ body {
     margin: 5px 5px; /* ボックスの間隔 */
 }
 
+/* ------------- エディター ---------------- */
+.editor-container {
+    flex: 4; /* 高さを4に設定 */
+    margin: 10px 0;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    overflow: hidden;
+}
+
+#editor {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 20px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
 /* ---------------- プレビュー ------------------ */
 .preview-container {
     position: relative; /* ボタンの絶対配置のために必要 */
-    flex: 6; /* 高さを6に設定 */
+    flex: 5; /* 高さを6に設定 */
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: white;
@@ -327,18 +325,4 @@ body {
     height: auto; 
     display: block; 
     margin: 0 auto; 
-}
-
-#backupBtn {
-    background-color: #17a2b8; /* 青色の背景 */
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-#backupBtn:hover {
-    background-color: #138496; /* ホバー時の色 */
 }
